@@ -33,7 +33,7 @@ export const lucia = new Lucia(adapter, {
 	// },
 	getUserAttributes: (attributes) => {
 		return {
-			userId: attributes.id,
+			// userId: attributes.id,
 			email: attributes.email,
 			firstName: attributes.firstName,
 			lastName: attributes.lastName,
@@ -48,7 +48,7 @@ export const lucia = new Lucia(adapter, {
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof lucia;
-		DatabaseUserAttributes: DatabaseUserAttributes;
+		// DatabaseUserAttributes: DatabaseUserAttributes;
 	}
 }
 

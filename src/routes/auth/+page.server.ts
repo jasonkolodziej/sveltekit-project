@@ -9,11 +9,12 @@ export const load: PageServerLoad = async ({ cookies, isDataRequest, route, loca
 	// }
 	// if (locals?.auth) {
 	// const session = await locals.auth.validate();
-	const user = locals.session?.userId;
+
+	// const verify = await lucia.validateSession(locals.session?.id ?? '');
+	const user = locals.user;
 
 	// }
-	if (user) {
-		// TODO: fix me
+	if (verify) {
 		locals.user = user;
 	}
 	if (route.id?.startsWith('/(protected)')) {
