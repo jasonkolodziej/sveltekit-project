@@ -1,7 +1,7 @@
 // +page.server.ts
 import { lucia } from '$lib/server/lucia';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { PageServerLoad } from '$types';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ cookies, isDataRequest, route, locals }) => {
 	// if (!locals.user) {
@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ cookies, isDataRequest, route, loca
 	// }
 	// if (locals?.auth) {
 	// const session = await locals.auth.validate();
-	const user = locals.session?.user;
+	const user = locals.session?.userId;
 
 	// }
 	if (user) {

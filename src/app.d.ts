@@ -8,7 +8,7 @@ declare global {
 		}
 		interface Locals {
 			auth: import('lucia').AuthRequest;
-			user: Lucia.UserAttributes | null;
+			user: import('lucia').UserAttributes | null;
 			session: import('lucia').Session | null;
 		}
 		// interface PageData {}
@@ -39,6 +39,15 @@ declare module 'lucia' {
 	interface Register {
 		Lucia: typeof lucia;
 		DatabaseUserAttributes: DatabaseUserAttributes;
+		UserAttributes: {
+			email: string;
+			firstName: string;
+			lastName: string;
+			role: string;
+			verified: boolean;
+			receiveEmail: boolean;
+			token: string;
+		};
 	}
 }
 export {};
