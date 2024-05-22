@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ cookies, isDataRequest, route, loca
 
 	// }
 	if (user) {
+		// TODO: fix me
 		locals.user = user;
 	}
 	if (route.id?.startsWith('/(protected)')) {
