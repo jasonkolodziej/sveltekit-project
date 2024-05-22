@@ -4,11 +4,10 @@
 			"path": "."
 		}
 	],
-	"settings": {},
+	"settings": {
+		"typescript.tsdk": "node_modules/typescript/lib"
+	},
 	"extensions": {
-		"recommendations": [
-			"svelte.svelte-vscode",
-			"ms-vscode.vscode-typescript-next"
-		]
+		"recommendations": ["svelte.svelte-vscode", "ms-vscode.vscode-typescript-next"]
 	}
 }
