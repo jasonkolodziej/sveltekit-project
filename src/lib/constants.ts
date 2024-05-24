@@ -14,3 +14,8 @@ export const TERMS_PRIVACY_APP_NAME = 'Your App';
 export const TERMS_PRIVACY_APP_PRICING_AND_SUBSCRIPTIONS =
 	'[Details about the pricing, subscription model, refund policy]';
 export const TERMS_PRIVACY_COUNTRY = 'United States';
+export const GITHUB_ID = '';
+export const GITHUB_SECRET = '';
+// # On UNIX systems you can use `openssl rand -hex 32` or
+// # https://generate-secret.vercel.app/32 to generate a secret.
+export const AUTH_SECRET = '';

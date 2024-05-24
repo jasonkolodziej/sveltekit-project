@@ -1,10 +1,7 @@
-import {
-	// auth, //? v2
-	lucia
-} from '$lib/server/lucia';
 import { redirect, type Handle } from '@sveltejs/kit';
 import type { HandleServerError } from '@sveltejs/kit';
 import log from '$lib/server/log';
+export { handle } from '$lib/server/auth';
 
 export const handleError: HandleServerError = async ({ error, event }) => {
 	const errorId = crypto.randomUUID();
@@ -23,45 +20,45 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 		errorId
 	};
 };
-export const handle: Handle = async ({ event, resolve }) => {
-	/**
-	 * SvelteKit has basic CSRF protection by default. 
-		We recommend creating a handle hook to validate requests and store the current user inside locals. 
-		You can get the cookie name with Lucia.sessionCookieName and validate the session cookie with 
-		Lucia.validateSession(). Make sure to delete the session cookie if it's invalid and 
-		create a new session cookie when the expiration gets extended, 
-		which is indicated by Session.fresh.
-	 */
-	const sessionId = event.cookies.get(lucia.sessionCookieName);
-	if (!sessionId) {
-		event.locals.user = null;
-		event.locals.session = null;
-		return resolve(event);
-	}
-	//? validateSession() no longer throws an error when the session is invalid,
-	//? and returns an object of User and Session instead.
-	const { session, user } = await lucia.validateSession(sessionId);
-	if (session && session.fresh) {
-		const sessionCookie = lucia.createSessionCookie(session.id);
-		//? sveltekit types deviates from the de-facto standard
-		//? you can use 'as any' too
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-	}
-	if (!session) {
-		// * invalid session
-		const sessionCookie = lucia.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-	}
-	event.locals.user = user;
-	event.locals.session = session;
-	return resolve(event);
-};
+// export const handle: Handle = async ({ event, resolve }) => {
+// 	/**
+// 	 * SvelteKit has basic CSRF protection by default.
+// 		We recommend creating a handle hook to validate requests and store the current user inside locals.
+// 		You can get the cookie name with Lucia.sessionCookieName and validate the session cookie with
+// 		Lucia.validateSession(). Make sure to delete the session cookie if it's invalid and
+// 		create a new session cookie when the expiration gets extended,
+// 		which is indicated by Session.fresh.
+// 	 */
+// 	const sessionId = event.cookies.get(lucia.sessionCookieName);
+// 	if (!sessionId) {
+// 		event.locals.user = null;
+// 		event.locals.session = null;
+// 		return resolve(event);
+// 	}
+// 	//? validateSession() no longer throws an error when the session is invalid,
+// 	//? and returns an object of User and Session instead.
+// 	const { session, user } = await lucia.validateSession(sessionId);
+// 	if (session && session.fresh) {
+// 		const sessionCookie = lucia.createSessionCookie(session.id);
+// 		//? sveltekit types deviates from the de-facto standard
+// 		//? you can use 'as any' too
+// 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+// 			path: '.',
+// 			...sessionCookie.attributes
+// 		});
+// 	}
+// 	if (!session) {
+// 		// * invalid session
+// 		const sessionCookie = lucia.createBlankSessionCookie();
+// 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+// 			path: '.',
+// 			...sessionCookie.attributes
+// 		});
+// 	}
+// 	event.locals.user = user;
+// 	event.locals.session = session;
+// 	return resolve(event);
+// };
 
 //? Old v2 for lucia
 // export const handle: Handle = async ({ event, resolve }) => {

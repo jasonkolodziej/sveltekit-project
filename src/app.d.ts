@@ -17,47 +17,4 @@ declare global {
 	}
 }
 
-/// <reference types="lucia-auth" />
-declare global {
-	//? v2
-	// namespace Lucia {
-	// 	type Auth = import('$lib/server/lucia').Auth;
-	// 	type DatabaseUserAttributes = {
-	// 		//* formerly `UserAttributes`
-	// 		email: string;
-	// 		firstName: string;
-	// 		lastName: string;
-	// 		role: string;
-	// 		verified: boolean;
-	// 		receiveEmail: boolean;
-	// 		token: string;
-	// 	};
-	// 	type DatabaseSessionAttributes = {}; // new
-	// }
-}
-declare module 'lucia' {
-	type DatabaseUserAttributes = {
-		//* formerly `UserAttributes`
-		email: string;
-		firstName: string;
-		lastName: string;
-		role: string;
-		verified: boolean;
-		receiveEmail: boolean;
-		token: string;
-	};
-	interface Register {
-		Lucia: typeof lucia;
-		DatabaseUserAttributes: DatabaseUserAttributes;
-		UserAttributes: {
-			email: string;
-			firstName: string;
-			lastName: string;
-			role: string;
-			verified: boolean;
-			receiveEmail: boolean;
-			token: string;
-		};
-	}
-}
 export {};

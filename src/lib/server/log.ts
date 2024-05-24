@@ -4,7 +4,7 @@
 // import getAllUrlParams from '$lib/_helpers/getAllUrlParams';
 // import parseTrack from '$lib/_helpers/parseTrack';
 // import parseMessage from '$lib/_helpers/parseMessage';
-import { DOMAIN } from '$lib/server/config/constants';
+import { DOMAIN } from '$lib/constants';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
