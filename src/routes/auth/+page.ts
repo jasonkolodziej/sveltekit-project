@@ -1,11 +1,9 @@
 import type { PageLoad } from '../$types';
 import type { PageData } from './$types';
 
-export const load: PageLoad = async ({ route, data }) => {
+export const load: PageLoad = async ({ route, data, parent }) => {
 	console.log(`${route.id}.PageServerLoad.from`);
-	return {
-		data
-	};
+	return {};
 };
 
 export const prerender = 'auto';

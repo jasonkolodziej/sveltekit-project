@@ -10,6 +10,7 @@
 		Content,
 		Grid,
 		Theme,
+		HeaderGlobalAction,
 		HeaderAction,
 		HeaderPanelDivider,
 		HeaderPanelLink
@@ -29,6 +30,7 @@
 		persistentHamburgerMenu: true,
 		href: '/'
 	};
+	console.log(data.session);
 </script>
 
 <Theme
@@ -39,8 +41,25 @@
 >
 	<Header {headerVals} {sideMenu} {headMenu}>
 		<!-- TODO: if logged in? -->
+		<svelte:fragment slot="headerGlobalAction">
+			{#if data.session === null}
+				<!-- * Not Signed in -->
+				<HeaderGlobalAction
+					iconDescription="Account"
+					tooltipAlignment="end"
+					icon={UserAvatarFilledAlt}
+					on:click={(e) => {
+						e.preventDefault();
+						goto('/auth');
+					}}
+				/>
+			{:else}
+				<!-- * Signed in -->
+				<HeaderGlobalAction iconDescription="Log out" icon={Logout} />
+			{/if}
+		</svelte:fragment>
 		<svelte:fragment slot="headerAction">
-			{#if data.session}
+			{#if data.session !== null}
 				<!-- * Signed in -->
 				<HeaderAction
 					bind:isOpen
@@ -49,10 +68,6 @@
 					closeIcon={UserAvatarFilledAlt}
 					{transition}
 				/>
-				<HeaderAction text="Log out" icon={Logout} />
-			{:else}
-				<!-- * Not Signed in -->
-				<HeaderAction icon={UserAvatarFilledAlt} text="Account" />
 			{/if}
 		</svelte:fragment>
 	</Header>

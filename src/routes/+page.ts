@@ -4,13 +4,9 @@ import type { PageLoad } from './$types';
 // export const prerender = true;
 export const prerender = 'auto';
 
-export const load: PageLoad = ({ params, route }) => {
-	return {
-		sections: [
-			{ slug: 'profile', title: 'Profile' },
-			{ slug: 'notifications', title: 'Notifications' }
-		]
-	};
+export const load: PageLoad = async ({ params, route, parent }) => {
+	const data = await parent();
+	return data;
 };
 
 //? +page.server.ts for lucia

@@ -79,12 +79,6 @@
 		<slot name="headerGlobalAction" />
 		<!--? <HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} /> -->
 		<slot name="headerAction">
-			<!--?		<HeaderAction-->
-			<!--?				bind:isOpen={isOpen1}-->
-			<!--?				icon={UserAvatarFilledAlt}-->
-			<!--?				closeIcon={UserAvatarFilledAlt}-->
-			<!--?				{transition}-->
-			<!--?		>-->
 			<HeaderPanelLinks>
 				<!-- TODO: Fix me -->
 				<slot name="headerPanelLinks" />

@@ -96,7 +96,8 @@ export const load: LayoutLoad = (async ({
 	);
 	return {
 		// data: sections,
-		sections: sections
+		sections: sections,
+		session: data.session
 		// devices: []
 	};
 }) satisfies LayoutLoad;

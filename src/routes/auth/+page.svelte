@@ -36,7 +36,7 @@
 					</Button>
 				</ButtonSet>
 				<br />
-				<Checkbox labelText="Remember me" align="bottom" />
+				<Checkbox labelText="Remember me" />
 			</FormGroup>
 			<FormGroup legendText="Other providers">
 				<Button
@@ -65,12 +65,7 @@
 					Create an account
 				</Button>
 			</FormGroup>
-			<Link
-				size="field"
-				kind="ghost"
-				on:click={() => signIn('github')}
-				iconDescription="Forgot my password"
-			>
+			<Link kind="ghost" on:click={() => signIn('github')} iconDescription="Forgot my password">
 				Forgot my password
 			</Link>
 		</Form>
