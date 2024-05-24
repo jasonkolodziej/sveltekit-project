@@ -18,17 +18,11 @@
 	} from 'carbon-components-svelte';
 	import { ArrowRight as Arrow, LogoGithub, LogoVmware, Add } from 'carbon-icons-svelte';
 
-	import { SignIn, SignOut } from '@auth/sveltekit/components';
+	// import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/stores';
 	import { signIn } from '@auth/sveltekit/client';
 </script>
 
-<Row padding>
-	<Column>
-		<h2 heading>Login</h2>
-		<div class="heading"></div>
-	</Column>
-</Row>
 <Row padding>
 	<Column>
 		<Form on:submit>

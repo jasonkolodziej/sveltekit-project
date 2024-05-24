@@ -16,7 +16,7 @@ export const load: LayoutServerLoad = (async ({
 	console.debug(
 		`MAIN.LayoutServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`
 	);
-	const session = await auth();
+	// const session = await auth();
 	//* Cookies
 	//* determine the routes of the App
 	const dirContent = readdirSync(PWD + '/src/routes'); // .filter(val => val.valueOf())
@@ -26,7 +26,7 @@ export const load: LayoutServerLoad = (async ({
 	// console.info(routes);
 	return {
 		// user: user,
-		session,
+		// session: session,
 		calculatedRoutes: routes
 	};
 }) satisfies LayoutServerLoad;

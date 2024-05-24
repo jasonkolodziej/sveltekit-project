@@ -40,23 +40,19 @@
 	<Header {headerVals} {sideMenu} {headMenu}>
 		<!-- TODO: if logged in? -->
 		<svelte:fragment slot="headerAction">
-			{#if $page.data.session}
+			{#if data.session}
 				<!-- * Signed in -->
 				<HeaderAction
 					bind:isOpen
 					icon={UserAvatarFilledAlt}
-					iconDescription="Account"
+					text="User"
 					closeIcon={UserAvatarFilledAlt}
 					{transition}
 				/>
-				<HeaderAction tooltipAlignment="end" iconDescription="Log out" icon={Logout} />
+				<HeaderAction text="Log out" icon={Logout} />
 			{:else}
 				<!-- * Not Signed in -->
-				<HeaderAction
-					icon={UserAvatarFilledAlt}
-					iconDescription="Account"
-					on:click={goto('/auth')}
-				/>
+				<HeaderAction icon={UserAvatarFilledAlt} text="Account" />
 			{/if}
 		</svelte:fragment>
 	</Header>

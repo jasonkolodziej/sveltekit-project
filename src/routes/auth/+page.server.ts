@@ -2,9 +2,9 @@ import { signIn, signOut } from '$lib/server/auth';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ request, locals, route }) => {
-	console.log(`${route.id}.PageServerLoad.from${__dirname}`);
+	console.log(`${route.id}.PageServerLoad.from`);
 	return {
-		session: await locals.auth()
+		// session: await locals.auth()
 	};
 };
 
