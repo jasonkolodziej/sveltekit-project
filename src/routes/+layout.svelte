@@ -3,7 +3,7 @@
 	import { preloadData, pushState, goto } from '$app/navigation';
 	import { expoIn } from 'svelte/easing';
 	import { page } from '$app/stores';
-	import type { LayoutData } from '$app/types';
+	import type { LayoutData } from './$types';
 
 	import Header from '$lib/header/Header.svelte';
 	import {
