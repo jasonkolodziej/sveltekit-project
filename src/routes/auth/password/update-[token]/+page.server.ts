@@ -1,25 +1,31 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { userUpdatePasswordSchema } from '$lib/config/zod-schemas';
-import { auth } from '$lib/server/lucia';
-import prisma from '$lib/config/prisma';
+import { userUpdatePasswordSchema } from '$lib/zod-schema';
+import { lucia } from '$lib/server/lucia';
+import { zod } from 'sveltekit-superforms/adapters';
+// import prisma from '$lib/config/prisma';
 
-export const load = async (event) => {
-	const form = await superValidate(event, userUpdatePasswordSchema);
+export const load = async ({ request }) => {
+	const form = await superValidate(zod(userUpdatePasswordSchema));
 	return {
 		form
 	};
 };
 
 export const actions = {
-	default: async (event) => {
-		const form = await superValidate(event, userUpdatePasswordSchema);
+	default: async ({ request }) => {
+		const form = await superValidate(request, zod(userUpdatePasswordSchema));
 		//console.log(form);
 
 		if (!form.valid) {
-			return fail(400, {
-				form
-			});
+			return setError(
+				form,
+				'There was a logging in. Please contact support if you need further help.',
+				{ status: 400 }
+			);
+			// return fail(400, {
+			// 	form
+			// });
 		}
 
 		//add user to db
@@ -39,14 +45,14 @@ export const actions = {
 				// need to update with new token because token is also used for verification
 				// and needs a new verification token in case user has not verified their account
 				// and already forgot their password before verifying. Now they can get a new one resent.
-				await prisma.authUser.update({
-					where: {
-						token: token
-					},
-					data: {
-						token: newToken
-					}
-				});
+				// await prisma.authUser.update({
+				// 	where: {
+				// 		token: token
+				// 	},
+				// 	data: {
+				// 		token: newToken
+				// 	}
+				// });
 			} else {
 				return setError(
 					form,

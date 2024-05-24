@@ -2,34 +2,78 @@
 <script lang="ts">
 	// import { ConicGradient } from '@skeletonlabs/skeleton';
 	// import type { ConicStop } from '@skeletonlabs/skeleton';
-	import { superForm } from 'sveltekit-superforms/client';
+	import { superForm, type SuperForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { userSchema } from '$lib/zod-schema';
 	// import { AlertTriangle } from 'lucide-svelte';
 	import { FluidForm, TextInput, PasswordInput, Button, FormGroup } from 'carbon-components-svelte';
-	import { zod } from 'sveltekit-superforms/adapters';
+	import { zod, zodClient } from 'sveltekit-superforms/adapters';
+	import { applyAction, deserialize } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
+	import type { SuperFormError } from 'sveltekit-superforms';
+	import { isValid } from 'zod';
+	// import { enhance } from '$app/forms';
+
 	// import { i } from '@inlang/sdk-js';
+	/** @type {import('./$types').PageData} */
 	export let data;
+
 	const signInSchema = userSchema.pick({ email: true, password: true });
-	const { form, errors, enhance, delayed } = superForm(data.form, {
+	/** @type {import('./$types').ActionData} */
+	let { form, errors, delayed } = superForm(data.form, {
 		id: 'signin',
-		taintedMessage: false,
+		taintedMessage: null,
 		delayMs: 0,
-		validators: zod(signInSchema)
+		validators: zod(signInSchema),
+		validationMethod: 'auto'
+		// onResult: (evResult) => {
+		// 	console.log(evResult.result);
+		// 	if (evResult.result.type === 'success') {
+		// 		evResult.cancel();
+		// 		// rerun all `load` functions, following the successful update
+		// 		// await invalidateAll();
+		// 	}
+
+		// 	applyAction(evResult.result);
+		// }
 	});
-	// const conicStops: ConicStop[] = [
-	// 	{ color: 'transparent', start: 0, end: 25 },
-	// 	{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
-	// ];
-	let password = '';
-	let invalid = false;
-	// form.update(signInSchema,)
+
+	// const result = validateForm();
+
+	// if (result.valid) {
+	// 	// ...
+	// }
 </script>
 
-<FluidForm>
+<FluidForm method="POST" action="/auth/sign-in">
 	<SuperDebug data={$form} />
+	{#if $errors._errors}
+		<TextInput
+			id="email"
+			name="email"
+			labelText="Email"
+			placeholder="Enter email..."
+			required
+			bind:value={$form.email}
+			bind:invalid={$errors.email}
+			bind:invalidText={$errors.email}
+		/>
+		<PasswordInput
+			id="password"
+			name="password"
+			bind:value={$form.password}
+			required
+			type="password"
+			labelText="Password"
+			placeholder="Enter password..."
+			bind:invalid={$errors.password}
+			bind:invalidText={$errors.password}
+		/>
+	{/if}
 	<TextInput
 		id="email"
+		name="email"
 		labelText="Email"
 		placeholder="Enter email..."
 		required
@@ -37,9 +81,8 @@
 	/>
 	<PasswordInput
 		id="password"
-		bind:value={password}
-		{invalid}
-		invalidText="Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number."
+		name="password"
+		bind:value={$form.password}
 		required
 		type="password"
 		labelText="Password"
