@@ -7,9 +7,10 @@
 		TextInput,
 		Button,
 		Checkbox,
-		Tooltip
+		Tooltip,
+		ButtonSet
 	} from 'carbon-components-svelte';
-	import { ArrowRight as Arrow } from 'carbon-icons-svelte';
+	import { ArrowRight as Arrow, LogoGithub, LogoVmware, Add } from 'carbon-icons-svelte';
 
 	import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/stores';
@@ -22,21 +23,51 @@
 	</Column>
 </Row>
 <Row padding>
-	<Form on:submit>
-		<FormGroup>
-			<TextInput labelText="User name" placeholder="Enter user name..." required></TextInput>
-		</FormGroup>
-		<Button type="submit" icon={Arrow} action={signIn}>Sign In</Button>
-
-		<FormGroup>
-			<Checkbox labelText="Remember me" />
-			<!-- <Tooltip>
-				<p>
-					You can opt to have your IBMid remembered the next time you access our website by checking
-					the "Remember Me" box. If you do not wish to have your IBMid remembered the next time you
-					access our website, leave the "Remember Me" box unchecked.
-				</p>
-			</Tooltip> -->
-		</FormGroup>
-	</Form>
+	<Column>
+		<Form on:submit>
+			<!-- <Column> -->
+			<FormGroup>
+				<TextInput size="xl" labelText="User name" placeholder="Enter user name..." required />
+			</FormGroup>
+			<FormGroup>
+				<ButtonSet>
+					<Button type="submit" icon={Arrow} kind="primary" on:click={() => signIn('credentials')}>
+						Sign in
+					</Button>
+				</ButtonSet>
+				<br />
+				<br />
+				<Checkbox labelText="Remember me" align="bottom" />
+			</FormGroup>
+			<FormGroup legendText="Other providers">
+				<Button
+					size="field"
+					icon={LogoGithub}
+					kind="secondary"
+					on:click={() => signIn('github')}
+					iconDescription="Sign in with Github"
+				/>
+				<Button
+					size="field"
+					icon={LogoVmware}
+					kind="tertiary"
+					on:click={() => signIn('github')}
+					iconDescription="Sign in with Vmware"
+				/>
+			</FormGroup>
+			<FormGroup legendText="Don't have an account?" noMargin>
+				<Button
+					size="field"
+					icon={Add}
+					kind="tertiary"
+					on:click={() => signIn('github')}
+					iconDescription="Create an account"
+				>
+					Create an account
+				</Button>
+			</FormGroup>
+		</Form>
+	</Column>
+	<Column />
+	<Column />
 </Row>
