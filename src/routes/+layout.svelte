@@ -1,5 +1,10 @@
 <script lang="ts">
 	import 'carbon-components-svelte/css/all.css';
+	import { preloadData, pushState, goto } from '$app/navigation';
+	import { expoIn } from 'svelte/easing';
+	import { page } from '$app/stores';
+	import type { LayoutData } from '$app/types';
+
 	import Header from '$lib/header/Header.svelte';
 	import {
 		Content,
@@ -10,10 +15,9 @@
 		HeaderPanelLink
 	} from 'carbon-components-svelte';
 	import type { HeaderProps } from 'carbon-components-svelte/src/UIShell/Header.svelte';
-	import type { LayoutData } from './$types';
+
 	import { Logout, UserAvatarFilledAlt } from 'carbon-icons-svelte';
-	import { expoIn } from 'svelte/easing';
-	import { page } from '$app/stores';
+
 	export let data: LayoutData;
 	export const transition = { duration: 600, delay: 50, easing: expoIn };
 	let sideMenu = data.sections;
