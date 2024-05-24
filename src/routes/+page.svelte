@@ -8,7 +8,13 @@
 		Button,
 		Checkbox,
 		Tooltip,
-		ButtonSet
+		ButtonSet,
+		Tabs,
+		Tab,
+		Tile,
+		TabContent,
+		FluidForm,
+		Link
 	} from 'carbon-components-svelte';
 	import { ArrowRight as Arrow, LogoGithub, LogoVmware, Add } from 'carbon-icons-svelte';
 
@@ -19,11 +25,17 @@
 
 <Row padding>
 	<Column>
-		<h2>Login</h2>
+		<h2 heading>Login</h2>
 	</Column>
 </Row>
-<Row padding>
+<Row>
 	<Column>
+		<!-- <Tile light> -->
+		<!-- <Tabs type="container">
+			<Tab>Sign In</Tab>
+			<Tab icon={Add}>Create an Account</Tab>
+			<svelte:fragment slot="content">
+				<TabContent> -->
 		<Form on:submit>
 			<!-- <Column> -->
 			<FormGroup>
@@ -36,26 +48,25 @@
 					</Button>
 				</ButtonSet>
 				<br />
-				<br />
 				<Checkbox labelText="Remember me" align="bottom" />
 			</FormGroup>
-			<FormGroup legendText="Other providers">
+			<FormGroup legendText="Login with another provider">
 				<Button
 					size="field"
 					icon={LogoGithub}
 					kind="secondary"
 					on:click={() => signIn('github')}
-					iconDescription="Sign in with Github"
+					iconDescription="Login with Github"
 				/>
 				<Button
 					size="field"
 					icon={LogoVmware}
 					kind="tertiary"
 					on:click={() => signIn('github')}
-					iconDescription="Sign in with Vmware"
+					iconDescription="Login with Vmware"
 				/>
 			</FormGroup>
-			<FormGroup legendText="Don't have an account?" noMargin>
+			<FormGroup legendText="Don't have an account?">
 				<Button
 					size="field"
 					icon={Add}
@@ -66,7 +77,26 @@
 					Create an account
 				</Button>
 			</FormGroup>
+			<Link
+				size="field"
+				kind="ghost"
+				on:click={() => signIn('github')}
+				iconDescription="Forgot my password"
+			>
+				Forgot my password
+			</Link>
 		</Form>
+		<!-- </TabContent>
+				<TabContent> -->
+		<!-- <Form>
+			<TextInput labelText="First name" placeholder="Enter first name..." required />
+			<TextInput labelText="Last name" placeholder="Enter last name..." required />
+			<TextInput labelText="Email" placeholder="Enter user name..." required />
+		</Form> -->
+		<!-- </TabContent>
+			</svelte:fragment>
+		</Tabs> -->
+		<!-- </Tile> -->
 	</Column>
 	<Column />
 	<Column />
