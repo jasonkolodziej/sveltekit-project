@@ -1,12 +1,24 @@
 <script lang="ts">
 	import 'carbon-components-svelte/css/all.css';
 	import Header from '$lib/header/Header.svelte';
-	import { Content, Grid, Theme } from 'carbon-components-svelte';
+	import {
+		Content,
+		Grid,
+		Theme,
+		HeaderAction,
+		HeaderPanelDivider,
+		HeaderPanelLink
+	} from 'carbon-components-svelte';
 	import type { HeaderProps } from 'carbon-components-svelte/src/UIShell/Header.svelte';
 	import type { LayoutData } from './$types';
+	import { Logout, UserAvatarFilledAlt } from 'carbon-icons-svelte';
+	import { expoIn } from 'svelte/easing';
+	import { page } from '$app/stores';
 	export let data: LayoutData;
+	export const transition = { duration: 600, delay: 50, easing: expoIn };
 	let sideMenu = data.sections;
 	let headMenu = data.sections;
+	let isOpen = false;
 	let headerVals: HeaderProps = {
 		company: 'International',
 		platformName: 'Business of Music',
@@ -21,7 +33,29 @@
 		'background-color': '#d02670'
 	}}
 >
-	<Header {headerVals} {sideMenu} {headMenu} />
+	<Header {headerVals} {sideMenu} {headMenu}>
+		<!-- TODO: if logged in? -->
+		<svelte:fragment slot="headerAction">
+			{#if $page.data.session}
+				<!-- * Signed in -->
+				<HeaderAction
+					bind:isOpen
+					icon={UserAvatarFilledAlt}
+					iconDescription="Account"
+					closeIcon={UserAvatarFilledAlt}
+					{transition}
+				/>
+				<HeaderAction tooltipAlignment="end" iconDescription="Log out" icon={Logout} />
+			{:else}
+				<!-- * Not Signed in -->
+				<HeaderAction
+					icon={UserAvatarFilledAlt}
+					iconDescription="Account"
+					on:click={goto('/auth')}
+				/>
+			{/if}
+		</svelte:fragment>
+	</Header>
 </Theme>
 
 <Content>

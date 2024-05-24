@@ -4,12 +4,17 @@
 		HeaderNav,
 		HeaderNavItem,
 		HeaderNavMenu,
+		HeaderUtilities,
 		SideNav,
 		SideNavItems,
 		SideNavLink,
 		SideNavMenu,
 		SideNavMenuItem,
 		SkipToContent,
+		HeaderPanelLinks,
+		HeaderPanelDivider,
+		HeaderPanelLink,
+		HeaderGlobalAction,
 		Theme
 	} from 'carbon-components-svelte';
 	import { expoIn } from 'svelte/easing';
@@ -18,6 +23,7 @@
 	import type { HeaderNavMenuProps } from 'carbon-components-svelte/src/UIShell/HeaderNavMenu.svelte';
 	import type { SideNavMenuProps } from 'carbon-components-svelte/src/UIShell/SideNavMenu.svelte';
 	import type { HeaderProps } from 'carbon-components-svelte/src/UIShell/Header.svelte';
+	import { SettingsAdjust } from 'carbon-icons-svelte';
 	export let isSideNavOpen: boolean;
 	//let isOpen1, isOpen2 = false;
 	export const transition = { duration: 600, delay: 50, easing: expoIn };
@@ -69,41 +75,27 @@
 			<!--            		<HeaderNavItem href="/" text="Link 4" />-->
 		</HeaderNav>
 	{/if}
-
-	<!--	<HeaderUtilities>-->
-	<!--		<HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} />-->
-	<!--		<HeaderAction-->
-	<!--				bind:isOpen={isOpen1}-->
-	<!--				icon={UserAvatarFilledAlt}-->
-	<!--				closeIcon={UserAvatarFilledAlt}-->
-	<!--				{transition}-->
-	<!--		>-->
-	<!--			<HeaderPanelLinks>-->
-	<!--				<HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>-->
-	<!--				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>-->
-	<!--				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>-->
-	<!--				<HeaderPanelLink>Switcher item 3</HeaderPanelLink>-->
-	<!--				<HeaderPanelLink>Switcher item 4</HeaderPanelLink>-->
-	<!--				<HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>-->
-	<!--				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>-->
-	<!--				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>-->
-	<!--				<HeaderPanelDivider>Switcher subject 3</HeaderPanelDivider>-->
-	<!--				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>-->
-	<!--			</HeaderPanelLinks>-->
-	<!--		</HeaderAction>-->
-	<!--		<HeaderAction bind:isOpen={isOpen2} {transition}>-->
-	<!--			<HeaderPanelLinks>-->
-	<!--				<HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>-->
-	<!--				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>-->
-	<!--				<HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>-->
-	<!--				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>-->
-	<!--				<HeaderPanelLink>Switcher item 2</HeaderPanelLink>-->
-	<!--&lt;!&ndash;				<HeaderPanelLink>Switcher item 3</HeaderPanelLink>&ndash;&gt;-->
-	<!--&lt;!&ndash;				<HeaderPanelLink>Switcher item 4</HeaderPanelLink>&ndash;&gt;-->
-	<!--&lt;!&ndash;				<HeaderPanelLink>Switcher item 5</HeaderPanelLink>&ndash;&gt;-->
-	<!--			</HeaderPanelLinks>-->
-	<!--		</HeaderAction>-->
-	<!--	</HeaderUtilities>-->
+	<HeaderUtilities>
+		<slot name="headerGlobalAction" />
+		<!--? <HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} /> -->
+		<slot name="headerAction">
+			<!--?		<HeaderAction-->
+			<!--?				bind:isOpen={isOpen1}-->
+			<!--?				icon={UserAvatarFilledAlt}-->
+			<!--?				closeIcon={UserAvatarFilledAlt}-->
+			<!--?				{transition}-->
+			<!--?		>-->
+			<HeaderPanelLinks>
+				<!-- TODO: Fix me -->
+				<slot name="headerPanelLinks" />
+				<!-- <HeaderPanelDivider>Switcher subject 1</HeaderPanelDivider>
+				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
+				<HeaderPanelDivider>Switcher subject 2</HeaderPanelDivider>
+				<HeaderPanelLink>Switcher item 1</HeaderPanelLink>
+				<HeaderPanelLink>Switcher item 2</HeaderPanelLink> -->
+			</HeaderPanelLinks>
+		</slot>
+	</HeaderUtilities>
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen}>

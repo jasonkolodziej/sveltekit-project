@@ -1,6 +1,8 @@
 import type { LayoutServerLoad } from './$types';
 import { PWD } from '$env/static/private';
 import { readdirSync } from 'fs';
+import path from 'path';
+const __dirname = path.resolve();
 // import { dataArray } from "$lib/server/libconfig.server";
 
 export const load: LayoutServerLoad = (async ({
@@ -12,7 +14,7 @@ export const load: LayoutServerLoad = (async ({
 	locals: { user, auth }
 }) => {
 	console.debug(
-		`MAIN.LayoutServerLoad.${route.id}.${request.method} ${isDataRequest} subreq?:${isSubRequest}`
+		`MAIN.LayoutServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`
 	);
 	const session = await auth();
 	//* Cookies
