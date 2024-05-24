@@ -9,11 +9,12 @@ export const load: PageServerLoad = async ({ cookies, isDataRequest, route, loca
 	// }
 	// if (locals?.auth) {
 	// const session = await locals.auth.validate();
-
-	// const verify = await lucia.validateSession(locals.session?.id ?? '');
-	const user = locals.user;
-
-	// }
+	const sessionId = locals.session?.id ?? null;
+	if (!sessionId) {
+		throw redirect(302, '/auth/sign-in');
+	}
+	const verify = await lucia.validateSession(sessionId);
+	const user = verify.user;
 	if (verify) {
 		locals.user = user;
 	}

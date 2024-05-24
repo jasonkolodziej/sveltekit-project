@@ -2,7 +2,18 @@
 <script lang="ts">
 	// import { superForm } from 'sveltekit-superforms/client';
 	//import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import { userSchema } from '$lib/server/config/zod-schema';
+	import { userSchema } from '$lib/zod-schema';
+	import {
+		FluidForm,
+		TextInput,
+		PasswordInput,
+		Checkbox,
+		Button,
+		Link
+	} from 'carbon-components-svelte';
+	import { zod } from 'sveltekit-superforms/adapters';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { boolean } from 'zod';
 	// import { ConicGradient } from '@skeletonlabs/skeleton';
 	// import type { ConicStop } from '@skeletonlabs/skeleton';
 	// import { i } from '@inlang/sdk-js';
@@ -12,26 +23,78 @@
 		firstName: true,
 		lastName: true,
 		email: true,
-		password: true
+		password: true,
+
+		terms: true
 	});
 
 	const { form, errors, enhance, delayed } = superForm(data.form, {
+		id: 'signup',
 		taintedMessage: null,
-		validators: signUpSchema,
-		delayMs: 0
+		delayMs: 0,
+		validators: zod(signUpSchema)
 	});
 
-	const conicStops: ConicStop[] = [
-		{ color: 'transparent', start: 0, end: 25 },
-		{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
-	];
+	// const conicStops: ConicStop[] = [
+	// 	{ color: 'transparent', start: 0, end: 25 },
+	// 	{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
+	// ];
 
+	let password = '';
+	let invalid = false;
 	let termsAccept = false;
+	$: invalid = !/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{6,}$/.test(password);
 	// $: termsValue = $form.terms as Writable<boolean>;
 </script>
 
-<form method="POST" action="/auth/sign-up" use:enhance>
-	<!-- <SuperDebug data={$form} />
+<FluidForm
+	on:submit={(e) => {
+		e.preventDefault();
+		console.log('submit');
+	}}
+>
+	<TextInput
+		labelText="First name"
+		placeholder="Enter first name..."
+		required
+		bind:value={$form.firstName}
+	/>
+	<TextInput
+		labelText="Last name"
+		placeholder="Enter last name..."
+		required
+		bind:value={$form.lastName}
+	/>
+	<TextInput
+		labelText="Email"
+		placeholder="Enter email..."
+		required
+		bind:value={$form.email}
+		bind:invalidText={$errors.email}
+	/>
+	<PasswordInput
+		bind:value={$form.password}
+		{invalid}
+		invalidText="Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number."
+		required
+		type="password"
+		labelText="Password"
+		placeholder="Enter password..."
+	/>
+	<br />
+	<br />
+	<Checkbox
+		bind:checked={$form.terms}
+		id="checkbox-terms"
+		labelText="I accept the terms and privacy policy."
+	/>
+
+	<br />
+	<Button type="submit">Submit</Button>
+</FluidForm>
+
+<!-- <form method="POST" action="/auth/sign-up" use:enhance> -->
+<!-- <SuperDebug data={$form} />
 	<div class="mt-6">
 		<label class="label">
 			<span class="sr-only">{i('First Name')}</span>
@@ -119,7 +182,7 @@
 				<!--{#if $errors.terms}
 					<small>{$errors.terms}</small>
 				{/if}-->
-	<!-- </span>
+<!-- </span>
 		</label>
 	</div>
 	<div class="mt-6">
@@ -129,4 +192,4 @@
 				)}{/if}</button
 		>
 	</div>  -->
-</form>
+<!-- </form> -->

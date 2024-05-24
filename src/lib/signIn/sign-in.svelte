@@ -3,38 +3,67 @@
 	// import { ConicGradient } from '@skeletonlabs/skeleton';
 	// import type { ConicStop } from '@skeletonlabs/skeleton';
 	import { superForm } from 'sveltekit-superforms/client';
-	//import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import { userSchema } from '$lib/server/config/zod-schema';
-	import { AlertTriangle } from 'lucide-svelte';
+	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import { userSchema } from '$lib/zod-schema';
+	// import { AlertTriangle } from 'lucide-svelte';
+	import { FluidForm, TextInput, PasswordInput, Button, FormGroup } from 'carbon-components-svelte';
+	import { zod } from 'sveltekit-superforms/adapters';
 	// import { i } from '@inlang/sdk-js';
 	export let data;
 	const signInSchema = userSchema.pick({ email: true, password: true });
 	const { form, errors, enhance, delayed } = superForm(data.form, {
-		taintedMessage: null,
-		validators: signInSchema,
-		delayMs: 0
+		id: 'signin',
+		taintedMessage: false,
+		delayMs: 0,
+		validators: zod(signInSchema)
 	});
-	const conicStops: ConicStop[] = [
-		{ color: 'transparent', start: 0, end: 25 },
-		{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
-	];
+	// const conicStops: ConicStop[] = [
+	// 	{ color: 'transparent', start: 0, end: 25 },
+	// 	{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
+	// ];
+	let password = '';
+	let invalid = false;
+	// form.update(signInSchema,)
 </script>
 
-<form method="POST" action="/auth/sign-in" use:enhance>
-	<!--<SuperDebug data={$form} />-->
+<FluidForm>
+	<SuperDebug data={$form} />
+	<TextInput
+		id="email"
+		labelText="Email"
+		placeholder="Enter email..."
+		required
+		bind:value={$form.email}
+	/>
+	<PasswordInput
+		id="password"
+		bind:value={password}
+		{invalid}
+		invalidText="Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number."
+		required
+		type="password"
+		labelText="Password"
+		placeholder="Enter password..."
+	/>
+	<br />
+	<Button type="submit">Sign in</Button>
+</FluidForm>
 
-	<!-- {#if $errors._errors}
+<!-- <form method="POST" action="/auth/sign-in" use:enhance> -->
+<!--<SuperDebug data={$form} />-->
+
+<!-- {#if $errors._errors}
 		<aside class="alert variant-filled-error mt-6">
 			Icon
 			<div><AlertTriangle size="42" /></div>
 			 Message -->
-	<!-- <div class="alert-message">
+<!-- <div class="alert-message">
 				<h3 class="h3">{i('signinProblem')}</h3>
 				<p>{$errors._errors}</p>
 			</div>
 		</aside>
 	{/if} -->
-	<!-- <div class="mt-6">
+<!-- <div class="mt-6">
 		<label class="label">
 			<span class="sr-only">{i('email')}</span>
 			<input
@@ -54,7 +83,7 @@
 		</label>
 	</div> -->
 
-	<!-- <div class="mt-6">
+<!-- <div class="mt-6">
 		<label class="label">
 			<span class="sr-only">{i('password')}</span>
 			<input
@@ -73,7 +102,7 @@
 		</label>
 	</div> -->
 
-	<!-- <div class="mt-6">
+<!-- <div class="mt-6">
 		<button type="submit" class="btn variant-filled-primary w-full"
 			>{#if $delayed}<ConicGradient stops={conicStops} spin width="w-6" />{:else}{i(
 					'signin'
@@ -83,4 +112,4 @@
 	<div class="flex flex-row justify-center items-center mt-10">
 		<a href="/auth/password/reset" class="font-semibold">{i('forgotPassword')}</a>
 	</div> -->
-</form>
+<!-- </form> -->

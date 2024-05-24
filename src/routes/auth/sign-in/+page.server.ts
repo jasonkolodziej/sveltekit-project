@@ -1,26 +1,28 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
-import { auth } from '$lib/server/lucia';
-import { userSchema } from '$lib/config/zod-schemas';
+import { zod } from 'sveltekit-superforms/adapters';
+import { lucia } from '$lib/server/lucia';
+import { userSchema } from '$lib/zod-schema';
+import type { PageServerLoad } from './$types.js';
 
 const signInSchema = userSchema.pick({
 	email: true,
 	password: true
 });
 
-export const load = async (event) => {
-	const session = await event.locals.auth.validate();
-	if (session) throw redirect(302, '/dashboard');
-	const form = await superValidate(event, signInSchema);
+export const load: PageServerLoad = async ({ request, locals, route }) => {
+	// const session = await event.locals.auth.validate();
+	// if (session) throw redirect(302, '/');
 	return {
-		form
+		form: await superValidate(zod(signInSchema))
 	};
 };
 
-export const actions = {
-	default: async (event) => {
-		const form = await superValidate(event, signInSchema);
-		//console.log(form);
+export const actions: Actions = {
+	default: async ({ request }) => {
+		const data = await request.formData();
+		const form = await superValidate(data, zod(signInSchema));
+		console.log(request, form, data);
 
 		if (!form.valid) {
 			return fail(400, {

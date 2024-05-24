@@ -1,41 +1,58 @@
 <script lang="ts">
-	import { ConicGradient } from '@skeletonlabs/skeleton';
-	import type { ConicStop } from '@skeletonlabs/skeleton';
+	// import { ConicGradient } from '@skeletonlabs/skeleton';
+	// import type { ConicStop } from '@skeletonlabs/skeleton';
 	import { superForm } from 'sveltekit-superforms/client';
 	//import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import { userUpdatePasswordSchema } from '$lib/config/zod-schemas';
-	import { AlertTriangle } from 'lucide-svelte';
-	import { i } from '@inlang/sdk-js';
+	import { userUpdatePasswordSchema } from '$lib/zod-schema';
+	import { FluidForm, PasswordInput } from 'carbon-components-svelte';
+	// import { AlertTriangle } from 'lucide-svelte';
+	// import { i } from '@inlang/sdk-js';
 	export let data;
-	const { form, errors, enhance, delayed } = superForm(data.form, {
-		taintedMessage: null,
-		validators: userUpdatePasswordSchema,
-		delayMs: 0
-	});
-	const conicStops: ConicStop[] = [
-		{ color: 'transparent', start: 0, end: 25 },
-		{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
-	];
+	// const { form, errors, enhance, delayed } = superForm(data.form, {
+	// 	taintedMessage: null,
+	// 	validators: userUpdatePasswordSchema,
+	// 	delayMs: 0
+	// });
+	// const conicStops: ConicStop[] = [
+	// 	{ color: 'transparent', start: 0, end: 25 },
+	// 	{ color: 'rgb(var(--color-primary-900))', start: 75, end: 100 }
+	// ];
+	let password = '';
+	let invalid = false;
+
+	$: invalid = !/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]{6,}$/.test(password);
 </script>
 
-<h3>{i("auth.password.update.changePassword")}</h3>
+<!-- <h3>{i('auth.password.update.changePassword')}</h3> -->
 
-<hr class="!border-t-2 mt-2 mb-6" />
+<FluidForm>
+	<PasswordInput
+		bind:value={password}
+		{invalid}
+		invalidText="Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number."
+		required
+		type="password"
+		labelText="Password"
+		placeholder="Enter password..."
+	/>
+</FluidForm>
 
-<form method="POST" use:enhance>
-	<!--<SuperDebug data={$form} />-->
-	{#if $errors._errors}
-		<aside class="alert variant-filled-error mt-6">
-			<!-- Icon -->
-			<div><AlertTriangle size="42" /></div>
-			<!-- Message -->
-			<div class="alert-message">
-				<h3 class="h3">{i("auth.password.update.passwordProblem")}</h3>
-				<p>{$errors._errors}</p>
-			</div>
-		</aside>
-	{/if}
-	<div class="mt-6">
+<!-- <hr class="!border-t-2 mt-2 mb-6" /> -->
+
+<!-- <form method="POST" use:enhance> -->
+<!--<SuperDebug data={$form} />-->
+<!-- {#if $errors._errors} -->
+<!-- <aside class="alert variant-filled-error mt-6"> -->
+<!-- Icon -->
+<!-- <div><AlertTriangle size="42" /></div> -->
+<!-- Message -->
+<!-- <div class="alert-message"> -->
+<!-- <h3 class="h3">{i("auth.password.update.passwordProblem")}</h3> -->
+<!-- <p>{$errors._errors}</p> -->
+<!-- </div> -->
+<!-- </aside> -->
+<!-- {/if} -->
+<!-- <div class="mt-6">
 		<label class="label">
 			<span class="sr-only">{i("password")}</span>
 			<input
@@ -52,8 +69,8 @@
 				<small>{$errors.password}</small>
 			{/if}
 		</label>
-	</div>
-	<div class="mt-6">
+	</div> -->
+<!-- <div class="mt-6">
 		<label class="label">
 			<span class="sr-only">{i("password")}</span>
 			<input
@@ -70,11 +87,11 @@
 				<small>{$errors.confirmPassword}</small>
 			{/if}
 		</label>
-	</div>
+	</div> -->
 
-	<div class="mt-6">
+<!-- <div class="mt-6">
 		<button type="submit" class="btn variant-filled-primary w-full"
 			>{#if $delayed}<ConicGradient stops={conicStops} spin width="w-6" />{:else}{i("auth.password.update.updatePassword")}{/if}</button
 		>
 	</div>
-</form>
+</form> -->

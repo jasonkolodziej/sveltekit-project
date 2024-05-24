@@ -1,8 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { lucia } from '$lib/server/lucia';
-import { userSchema } from '$lib/config/zod-schemas';
-import { sendVerificationEmail } from '$lib/config/email-messages';
+import { userSchema } from '$lib/zod-schema';
+import { zod } from 'sveltekit-superforms/adapters';
+// import { sendVerificationEmail } from '$lib/config/email-messages';
 
 const signUpSchema = userSchema.pick({
 	firstName: true,
@@ -12,18 +13,18 @@ const signUpSchema = userSchema.pick({
 	terms: true
 });
 
-export const load = async (event) => {
-	const session = await event.locals.auth.validate();
+export const load = async ({ request, locals }) => {
+	// const session = await locals.auth.validate();
+	const session = locals.session;
 	if (session) throw redirect(302, '/dashboard');
-	const form = await superValidate(event, signUpSchema);
 	return {
-		form
+		form: await superValidate(zod(signUpSchema))
 	};
 };
 
 export const actions = {
-	default: async (event) => {
-		const form = await superValidate(event, signUpSchema);
+	default: async ({ request }) => {
+		const form = await superValidate(request, zod(signUpSchema));
 		//console.log(form);
 
 		if (!form.valid) {
@@ -37,7 +38,7 @@ export const actions = {
 			console.log('creating user');
 			const token = crypto.randomUUID();
 
-			const user = await auth.createUser({
+			const user = await user.createUser({
 				key: {
 					providerId: 'email',
 					providerUserId: form.data.email.toLowerCase(),
