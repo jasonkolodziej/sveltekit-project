@@ -2,17 +2,12 @@
 <script lang="ts">
 	// import { ConicGradient } from '@skeletonlabs/skeleton';
 	// import type { ConicStop } from '@skeletonlabs/skeleton';
-	import { superForm, type SuperForm } from 'sveltekit-superforms/client';
+	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { userSchema } from '$lib/zod-schema';
 	// import { AlertTriangle } from 'lucide-svelte';
-	import { FluidForm, TextInput, PasswordInput, Button, FormGroup } from 'carbon-components-svelte';
-	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { applyAction, deserialize } from '$app/forms';
-	import type { ActionResult } from '@sveltejs/kit';
-	import { invalidateAll } from '$app/navigation';
-	import type { SuperFormError } from 'sveltekit-superforms';
-	import { isValid } from 'zod';
+	import { FluidForm, TextInput, PasswordInput, Button } from 'carbon-components-svelte';
+	import { zod } from 'sveltekit-superforms/adapters';
 	// import { enhance } from '$app/forms';
 
 	// import { i } from '@inlang/sdk-js';
@@ -21,7 +16,7 @@
 
 	const signInSchema = userSchema.pick({ email: true, password: true });
 	/** @type {import('./$types').ActionData} */
-	let { form, errors, delayed } = superForm(data.form, {
+	const { form, errors, delayed } = superForm(data.form, {
 		id: 'signin',
 		taintedMessage: null,
 		delayMs: 0,
@@ -46,31 +41,12 @@
 	// }
 </script>
 
+{#if $errors._errors}
+	<p>{$errors._errors}</p>
+{/if}
 <FluidForm method="POST" action="/auth/sign-in">
 	<SuperDebug data={$form} />
-	{#if $errors._errors}
-		<TextInput
-			id="email"
-			name="email"
-			labelText="Email"
-			placeholder="Enter email..."
-			required
-			bind:value={$form.email}
-			bind:invalid={$errors.email}
-			bind:invalidText={$errors.email}
-		/>
-		<PasswordInput
-			id="password"
-			name="password"
-			bind:value={$form.password}
-			required
-			type="password"
-			labelText="Password"
-			placeholder="Enter password..."
-			bind:invalid={$errors.password}
-			bind:invalidText={$errors.password}
-		/>
-	{/if}
+
 	<TextInput
 		id="email"
 		name="email"
@@ -78,6 +54,8 @@
 		placeholder="Enter email..."
 		required
 		bind:value={$form.email}
+		bind:invalid={$errors.email}
+		bind:invalidText={$errors.email}
 	/>
 	<PasswordInput
 		id="password"
@@ -87,6 +65,8 @@
 		type="password"
 		labelText="Password"
 		placeholder="Enter password..."
+		bind:invalid={$errors.password}
+		bind:invalidText={$errors.password}
 	/>
 	<br />
 	<Button type="submit">Sign in</Button>

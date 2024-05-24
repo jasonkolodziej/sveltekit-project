@@ -2,10 +2,10 @@
 // for information about these interfaces
 declare global {
 	namespace App {
-		interface Error {
-			code?: string;
-			errorId?: string;
-		}
+		// interface Error {
+		// 	code?: string;
+		// 	errorId?: string;
+		// }
 		interface Locals {
 			// auth: import('lucia').AuthRequest;
 			user: import('lucia').RegisteredDatabaseUserAttributes | null;
