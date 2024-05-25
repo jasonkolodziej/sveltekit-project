@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import type { LayoutData } from './$types';
 
-	import Header from '$lib/header/Header.svelte';
+	import Header from '$lib/components/header/Header.svelte';
 	import {
 		Content,
 		Grid,
@@ -16,6 +16,7 @@
 		HeaderPanelLink
 	} from 'carbon-components-svelte';
 	import type { HeaderProps } from 'carbon-components-svelte/src/UIShell/Header.svelte';
+	import { signIn, signOut } from '@auth/sveltekit/client';
 
 	import { Logout, UserAvatarFilledAlt } from 'carbon-icons-svelte';
 
@@ -30,7 +31,7 @@
 		persistentHamburgerMenu: true,
 		href: '/'
 	};
-	console.log(data.session);
+	// console.log(data.session);
 </script>
 
 <Theme
@@ -55,7 +56,14 @@
 				/>
 			{:else}
 				<!-- * Signed in -->
-				<HeaderGlobalAction iconDescription="Log out" icon={Logout} />
+				<HeaderGlobalAction
+					iconDescription="Log out"
+					icon={Logout}
+					on:click={(e) => {
+						e.preventDefault();
+						signOut();
+					}}
+				/>
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="headerAction">

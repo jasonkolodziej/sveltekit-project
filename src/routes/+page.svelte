@@ -4,6 +4,6 @@
 
 <Row padding>
 	<Column>
-		<h2 heading>Welcome</h2>
+		<h2>Welcome</h2>
 	</Column>
 </Row>

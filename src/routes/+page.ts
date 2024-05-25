@@ -4,10 +4,10 @@ import type { PageLoad } from './$types';
 // export const prerender = true;
 export const prerender = 'auto';
 
-export const load: PageLoad = async ({ params, route, parent }) => {
-	const data = await parent();
-	return data;
-};
+// export const load: PageLoad = async ({ params, route, parent }) => {
+// 	const data = await parent();
+// 	return data;
+// };
 
 //? +page.server.ts for lucia
 // import { lucia } from "$lib/server/lucia";

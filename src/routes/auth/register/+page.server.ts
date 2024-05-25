@@ -32,25 +32,24 @@ export const load: PageServerLoad = async ({
 		`PageServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`,
 		params
 	);
-	// const regForm = await superValidate(zod(registerSchema));
-	const signInForm = await superValidate(zod(signInSchema));
+	const regForm = await superValidate(zod(registerSchema));
+	// const signInForm = await superValidate(zod(signInSchema));
 	// const data = await parent();
 	return {
-		// regForm,
-		signInForm
+		regForm
 		// data
 	};
 };
 
 export const actions: Actions = {
-	signOut: async (event) => {
-		console.log(`Actions.${event.request.method}(${event.route.id}).signOut`);
-		signOut(event);
-	},
-	signIn: async (event: { request; route }) => {
-		console.log(`Actions.${event.request.method}(${event.route.id}).signIn`);
+	register: async ({ request, route }) => {
+		console.log(`Actions.${request.method}(${route.id}).register`);
+		const regForm = await superValidate(request, zod(registerSchema));
+
+		console.log('register', regForm);
+
+		if (!regForm.valid) return fail(400, { regForm });
+
+		return message(regForm, { text: 'Form "register" posted successfully!' });
 	}
-	// default: async ({ route }) => {
-	// 	console.log(`${route.id}.Actions.default`);
-	// }
 } satisfies Actions;

@@ -1,7 +1,32 @@
-import { redirect, type Handle } from '@sveltejs/kit';
 import type { HandleServerError } from '@sveltejs/kit';
 import log from '$lib/server/log';
-export { handle } from '$lib/server/auth';
+import { redirect, type Handle } from '@sveltejs/kit';
+import { handle as authenticationHandle } from '$lib/server/auth';
+import { sequence } from '@sveltejs/kit/hooks';
+
+export const authorizationHandle: Handle = async ({ resolve, event }) => {
+	console.log(`hooks.server.authorizationHandle.${event.request.method}(${event.route.id})`);
+	if (event.url.pathname.startsWith('/authenticated')) {
+		const session = await event.locals.auth();
+		if (!session) {
+			// Redirect to the signin page
+			throw redirect(303, '/auth');
+		}
+	}
+	const result = await resolve(event);
+	return result;
+};
+
+export const otherHandler: Handle = async ({ resolve, event }) => {
+	console.log(`hooks.server.otherHandler.${event.request.method}(${event.route.id})`);
+	const result = await resolve(event);
+	return result;
+};
+
+// First handle authentication, then authorization
+// Each function acts as a middleware, receiving the request handle
+// And returning a handle which gets passed to the next function
+export const handle: Handle = sequence(authenticationHandle, authorizationHandle, otherHandler);
 
 export const handleError: HandleServerError = async ({ error, event }) => {
 	const errorId = crypto.randomUUID();
@@ -20,6 +45,21 @@ export const handleError: HandleServerError = async ({ error, event }) => {
 		errorId
 	};
 };
+
+// async function authorizationHandle({ event, resolve }) {
+// 	// * Protect any routes under /authenticated
+// 	if (event.url.pathname.startsWith('/authenticated')) {
+// 		const session = await event.locals.auth();
+// 		if (!session) {
+// 			// Redirect to the signin page
+// 			throw redirect(303, '/auth');
+// 		}
+// 	}
+
+// 	// If the request is still here, just proceed as normally
+// 	return resolve(event);
+// }
+
 // export const handle: Handle = async ({ event, resolve }) => {
 // 	/**
 // 	 * SvelteKit has basic CSRF protection by default.
