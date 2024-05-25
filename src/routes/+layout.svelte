@@ -35,13 +35,13 @@
 	// 					? 'g10'
 	// 					: 'white';
 
-	let sideMenu = data.sections;
+	export let sideMenu = '';
 	let headMenu = data.sections;
 	let isOpen = false;
 	let headerVals: HeaderProps = {
-		company: 'ASAD',
+		company: 'ASAD ',
 		platformName: '/ IN',
-		persistentHamburgerMenu: true,
+		persistentHamburgerMenu: false,
 		href: '/'
 	};
 	// console.log(`totalMinutesToday: ${totalMinutes}, theme: ${themeSundial}`);
@@ -54,7 +54,7 @@
 		'background-color': '#d02670'
 	}}
 >
-	<Header {headerVals} {sideMenu} {headMenu}>
+	<Header {headerVals} {sideMenu} {headMenu} rail>
 		<!-- TODO: if logged in? -->
 		<svelte:fragment slot="headerGlobalAction">
 			{#if data.session === null}

@@ -35,6 +35,7 @@
 	}
 	export type Nav = NavTree | NavLink;
 	export let headMenu: Array<Nav> = [];
+	export let rail = false;
 	export let sideMenu: Array<Nav> = [];
 	export let headerVals: HeaderProps = {
 		company: 'Company',
@@ -92,7 +93,7 @@
 	</HeaderUtilities>
 </Header>
 
-<SideNav bind:isOpen={isSideNavOpen}>
+<SideNav bind:isOpen={isSideNavOpen} bind:rail>
 	<SideNavItems>
 		{#each sideMenu as sideItem}
 			{#if sideItem.hasOwnProperty('dir')}

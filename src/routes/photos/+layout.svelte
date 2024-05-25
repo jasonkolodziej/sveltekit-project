@@ -19,6 +19,8 @@
 	// let layout: LayoutData;
 	let open = false;
 	let ref = null;
+	// let sideMenu: Array<{ slug: string; title: string; text: string; href: string }> = new Array();
+	// sideMenu.push({ slug: 'library', title: 'Library', text: 'Library', href: '/' });
 </script>
 
 <Row>
@@ -28,7 +30,12 @@
 	<!-- * Date range picker -->
 	<Column>
 		<div bind:this={ref} style:position="relative">
-			<Button icon={Calendar} iconDescription="Select date range" on:click={() => (open = !open)} />
+			<Button
+				kind="secondary"
+				icon={Calendar}
+				iconDescription="Select date range"
+				on:click={() => (open = !open)}
+			/>
 			<Popover
 				caret
 				bind:open
