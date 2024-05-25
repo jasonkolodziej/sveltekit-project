@@ -2,9 +2,9 @@
 	import { Row, Column } from 'carbon-components-svelte';
 	import { page } from '$app/stores';
 	import type { LayoutData } from './$types';
-	import type { PageData } from './$types';
+	// import type { PageData } from './$types';
 	// let page: PageData;
-	let layout: LayoutData;
+	// let layout: LayoutData;
 </script>
 
 <Row padding>

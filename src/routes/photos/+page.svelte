@@ -20,8 +20,8 @@
 	import type { PageData } from './$types';
 	// let page: PageData;
 	let layout: LayoutData;
-	let timeout = undefined;
-	$: showNotification = timeout !== undefined;
+	// let timeout = undefined;
+	// $: showNotification = timeout !== undefined;
 
 	const images = [
 		'https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg',
@@ -36,62 +36,34 @@
 
 <Row padding>
 	<Column>
-		<DatePicker datePickerType="range" on:change>
-			<DatePickerInput labelText="Start date" placeholder="mm/dd/yyyy" />
-			<DatePickerInput labelText="End date" placeholder="mm/dd/yyyy" />
-		</DatePicker>
-	</Column>
-	<Column>
-		<Search size="sm" />
-		<Button
-			disabled={showNotification}
-			on:click={() => {
-				timeout = 3_000; // 3 seconds
+		<FileUploaderDropContainer
+			on:click={() => {}}
+			multiple
+			labelText="Drag and drop files here or click to upload"
+			validateFiles={(files) => {
+				return files.filter((file) => file.size < 1_024);
 			}}
-		>
-			Show notification
-		</Button>
+			on:change={(e) => {
+				console.log('files', e.detail);
+			}}
+		/>
 	</Column>
-	<Column />
-	<Column />
-	<Column />
-</Row>
-
-<Row padding>
-	<Column>
-		<FileUploaderDropContainer />
-	</Column>
-	<Column>
-		<!-- * <div role="group" aria-label="selectable tiles"> -->
-		<!-- <Tile> -->
-		{#if showNotification}
-			<div transition:fade>
-				<FileUploaderItem
-					invalid
-					id="readme"
-					name="README.md"
-					errorSubject="File size exceeds 500kb limit"
-					errorBody="Please select a new file."
-					status="edit"
-					on:delete={(e) => {
-						timeout = undefined;
-						console.log(e.detail); // true if closed via timeout
-					}}
-				/>
-			</div>
-		{/if}
-	</Column>
-	<Column>
-		{#if showNotification}
-			<div transition:fade>
-				<!-- * <div role="group" aria-label="selectable tiles"> -->
-				<FileUploaderItem id="readme" name="README.md" status="complete" />
-			</div>
-		{/if}
-	</Column>
-	<Column>
-		<FileUploaderItem id="readme" name="README.md" status="uploading" />
-	</Column>
+	<!-- <Column> -->
+	<!-- * <div role="group" aria-label="selectable tiles"> -->
+	<!-- <div transition:fade>
+			<FileUploaderItem
+				invalid
+				id="readme"
+				name="README.md"
+				errorSubject="File size exceeds 500kb limit"
+				errorBody="Please select a new file."
+				status="edit"
+				on:delete={(e) => {
+					console.log(e.detail); // true if closed via timeout
+				}}
+			/>
+		</div> -->
+	<!-- </Column> -->
 	{#each images as src}
 		<Column>
 			<SelectableTile>

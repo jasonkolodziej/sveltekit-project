@@ -4,7 +4,7 @@ import { readdirSync } from 'fs';
 import path from 'path';
 import { redirect } from '@sveltejs/kit';
 import { goto } from '$app/navigation';
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 // import { dataArray } from "$lib/server/libconfig.server";
 
 export const load: LayoutServerLoad = (async ({
@@ -32,6 +32,7 @@ export const load: LayoutServerLoad = (async ({
 	// console.info(routes);
 	return {
 		// user: user,
+		// title: route.id?.replace('/', '').charAt(0).toUpperCase(),
 		session: await auth(),
 		calculatedRoutes: routes
 	};

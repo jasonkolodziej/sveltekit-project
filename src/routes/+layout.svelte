@@ -22,34 +22,34 @@
 
 	export let data: LayoutData;
 	export const transition = { duration: 600, delay: 50, easing: expoIn };
-	const time = new Date(Date.now());
-	const totalMinutes = time.getMinutes() + time.getHours() * 60;
-	const themeSundial =
-		totalMinutes >= 0 || 360 >= totalMinutes
-			? 'g100'
-			: totalMinutes > 360 || 648 >= totalMinutes
-				? 'g90'
-				: totalMinutes > 648 || 936 >= totalMinutes
-					? 'g80'
-					: totalMinutes > 936
-						? 'g10'
-						: 'white';
+	// const time = new Date(Date.now());
+	// const totalMinutes = time.getMinutes() + time.getHours() * 60;
+	// const themeSundial =
+	// 	totalMinutes >= 0 || 360 >= totalMinutes
+	// 		? 'g100'
+	// 		: totalMinutes > 360 || 648 >= totalMinutes
+	// 			? 'g90'
+	// 			: totalMinutes > 648 || 936 >= totalMinutes
+	// 				? 'g80'
+	// 				: totalMinutes > 936
+	// 					? 'g10'
+	// 					: 'white';
 
 	let sideMenu = data.sections;
 	let headMenu = data.sections;
 	let isOpen = false;
 	let headerVals: HeaderProps = {
-		company: 'International',
-		platformName: 'Business of Music',
+		company: 'ASAD',
+		platformName: '/ IN',
 		persistentHamburgerMenu: true,
 		href: '/'
 	};
-	console.log(`totalMinutesToday: ${totalMinutes}, theme: ${themeSundial}`);
+	// console.log(`totalMinutesToday: ${totalMinutes}, theme: ${themeSundial}`);
 </script>
 
 <!-- "white" "white" | "g10" | "g80" | "g90" | "g100"; -->
 <Theme
-	theme={themeSundial}
+	theme="white"
 	tokens={{
 		'background-color': '#d02670'
 	}}
@@ -71,7 +71,7 @@
 			{:else}
 				<!-- * Signed in -->
 				<HeaderGlobalAction
-					iconDescription="Log out"
+					iconDescription="Sign out"
 					icon={Logout}
 					on:click={(e) => {
 						e.preventDefault();

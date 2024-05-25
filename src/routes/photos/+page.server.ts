@@ -14,6 +14,7 @@ export const load: PageServerLoad = async ({
 		`PageServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`,
 		params
 	);
+	const parentData = await parent();
 	// const signInForm = await superValidate(zod(signInSchema));
 	// const session = await locals.auth();
 	// if (!session) {
@@ -21,6 +22,7 @@ export const load: PageServerLoad = async ({
 	// 	throw redirect(303, '/auth/signIn');
 	// }
 	return {
+		...parentData,
 		title: 'Photos'
 	};
 };
