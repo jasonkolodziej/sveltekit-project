@@ -11,16 +11,11 @@
 	import type { LayoutData } from './$types';
 	// let page: PageData;
 	let layout: LayoutData;
-	// let timeout = undefined;
-
 	const images = [
 		'https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg',
 		'https://upload.wikimedia.org/wikipedia/commons/b/b9/Carbon-design-system-logo.png',
 		'https://m.media-amazon.com/images/I/81JikRw3uLL.jpg'
 	];
-
-	let index = 0;
-
 	let filesUploader;
 	let statuses = undefined;
 	interface FileUploadStatus {
@@ -64,7 +59,8 @@
 
 <Row padding>
 	<!-- <Column sm={{ span: 4, offset: 0 }}> -->
-	<Column sm={1} md={4} lg={8}>
+	<!-- <Column sm={1} md={4} lg={8}> -->
+	<Column>
 		<FileUploaderDropContainer
 			bind:this={filesUploader}
 			multiple
