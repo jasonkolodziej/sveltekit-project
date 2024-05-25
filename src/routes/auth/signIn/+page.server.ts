@@ -14,13 +14,6 @@ const signInSchema = userSchema.pick({
 	password: true
 });
 const resetPasswordSchema = userSchema.pick({ email: true });
-const registerSchema = userSchema.pick({
-	firstName: true,
-	lastName: true,
-	email: true,
-	password: true,
-	terms: true
-});
 
 export const load: PageServerLoad = async ({
 	request,
@@ -35,19 +28,21 @@ export const load: PageServerLoad = async ({
 		`PageServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`,
 		params
 	);
-	// const signInForm = await superValidate(zod(signInSchema));
-	const session = await locals.auth();
-	if (!session) {
-		// Redirect to the signin page
-		throw redirect(303, '/auth/signIn');
-	}
+	const signInForm = await superValidate(zod(signInSchema));
+	return {
+		signInForm
+	};
 };
 
 export const actions: Actions = {
-	signOut: (event) => {
-		console.log(`Actions.${event.request.method}(${event.route.id}).signOut`);
-		return signOut(event);
-	}
+	// signIn: async (event) => {
+	// 	console.log(`Actions.${event.request.method}(${event.route.id}).signIn`);
+	// 	const signInForm = await superValidate(event, zod(signInSchema));
+	// 	// console.log('signInAction', signInForm);
+	// 	if (!signInForm.valid) return fail(400, { signInForm });
+	// 	return signIn('credentials', signInForm.data);
+	// }
+	signIn: signIn
 	// default: async ({ route }) => {
 	// 	console.log(`${route.id}.Actions.default`);
 	// }

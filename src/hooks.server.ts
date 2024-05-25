@@ -10,7 +10,7 @@ export const authorizationHandle: Handle = async ({ resolve, event }) => {
 		const session = await event.locals.auth();
 		if (!session) {
 			// Redirect to the signin page
-			throw redirect(303, '/auth');
+			throw redirect(303, '/auth/signIn');
 		}
 	}
 	const result = await resolve(event);

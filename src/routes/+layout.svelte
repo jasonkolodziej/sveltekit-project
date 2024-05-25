@@ -18,7 +18,7 @@
 	import type { HeaderProps } from 'carbon-components-svelte/src/UIShell/Header.svelte';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 
-	import { Logout, UserAvatarFilledAlt } from 'carbon-icons-svelte';
+	import { Login, Logout, UserAvatarFilledAlt } from 'carbon-icons-svelte';
 
 	export let data: LayoutData;
 	export const transition = { duration: 600, delay: 50, easing: expoIn };
@@ -51,7 +51,7 @@
 					icon={UserAvatarFilledAlt}
 					on:click={(e) => {
 						e.preventDefault();
-						goto('/auth');
+						goto('/auth/signIn');
 					}}
 				/>
 			{:else}

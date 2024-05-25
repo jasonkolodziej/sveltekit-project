@@ -8,19 +8,15 @@
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/inputField/InputField.svelte';
 	import { signIn } from '@auth/sveltekit/client';
+	import type { SuperForm } from 'sveltekit-superforms';
+	import { unknown } from 'zod';
 	// export let data: PageData;
 	let form = $page.data.signInForm;
-	console.log(form);
+	let sforms: Record<string, unknown>;
 </script>
 
 <!-- Form with dataType 'form' -->
-<Form
-	action="?/signIn"
-	data={$page.data.signInForm}
-	invalidateAll={false}
-	let:message
-	let:superform
->
+<Form action="?/signIn" data={form} invalidateAll={false} let:message let:superform>
 	<FormGroup>
 		<!-- <TextInput
 			size="xl"
@@ -52,7 +48,17 @@
 	</FormGroup>
 	<FormGroup>
 		<ButtonSet>
-			<Button type="submit" icon={Arrow} kind="primary">Sign in</Button>
+			<Button
+				type="submit"
+				icon={Arrow}
+				kind="primary"
+				on:click={(e) => {
+					e.preventDefault();
+					superform.form.subscribe((form) => (sforms = form));
+					// console.log(sforms);
+					signIn('credentials', sforms);
+				}}>Sign in</Button
+			>
 		</ButtonSet>
 		<br />
 		<Checkbox labelText="Remember me" />
