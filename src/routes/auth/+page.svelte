@@ -1,38 +1,26 @@
 <script lang="ts">
-	import {
-		Row,
-		Column,
-		FormGroup,
-		TextInput,
-		Button,
-		Checkbox,
-		Tooltip,
-		ButtonSet,
-		Tabs,
-		Tab,
-		Tile,
-		TabContent,
-		FluidForm,
-		Link
-	} from 'carbon-components-svelte';
+	import { FormGroup, Button, Checkbox, ButtonSet, Link } from 'carbon-components-svelte';
 	import Form from '$lib/components/form/Form.svelte';
 	import { ArrowRight as Arrow, LogoGithub, LogoVmware, Add } from 'carbon-icons-svelte';
 
 	// import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/stores';
-	import { applyAction } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/inputField/InputField.svelte';
-	import { superformClient } from 'sveltekit-superforms/adapters';
-	import type { Subscriber } from 'svelte/motion';
 	import { signIn } from '@auth/sveltekit/client';
-	export let data: PageData;
+	// export let data: PageData;
 	let form = $page.data.signInForm;
 	console.log(form);
 </script>
 
 <!-- Form with dataType 'form' -->
-<Form action="?/signIn" data={form} invalidateAll={false} let:message let:superform>
+<Form
+	action="?/signIn"
+	data={$page.data.signInForm}
+	invalidateAll={false}
+	let:message
+	let:superform
+>
 	<FormGroup>
 		<!-- <TextInput
 			size="xl"
@@ -46,9 +34,20 @@
 			{superform}
 			{message}
 			field="email"
-			placeholder="Enter user name..."
+			placeholder="pssst try your email..."
 			size="xl"
 			labelText="User name"
+		/>
+	</FormGroup>
+	<FormGroup>
+		<InputField
+			{superform}
+			{message}
+			field="password"
+			hideable
+			placeholder="Password"
+			size="xl"
+			labelText="Password"
 		/>
 	</FormGroup>
 	<FormGroup>

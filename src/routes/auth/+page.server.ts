@@ -1,9 +1,11 @@
-import { signIn, signOut } from '$lib/server/auth';
+// import {  signOut } from '$lib/server/auth';
+import { signIn } from '@auth/sveltekit/client';
 import { userSchema, userUpdatePasswordSchema } from '$lib/zod-schema';
 import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
-import { message, superValidate } from 'sveltekit-superforms';
-import { fail } from '@sveltejs/kit';
+import { message, superValidate, fail } from 'sveltekit-superforms';
+import { applyAction } from '$app/forms';
+// import { fail } from '@sveltejs/kit';
 // import {superValidate} from ''
 
 const signInSchema = userSchema.pick({
@@ -32,13 +34,9 @@ export const load: PageServerLoad = async ({
 		`PageServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`,
 		params
 	);
-	// const regForm = await superValidate(zod(registerSchema));
 	const signInForm = await superValidate(zod(signInSchema));
-	// const data = await parent();
 	return {
-		// regForm,
 		signInForm
-		// data
 	};
 };
 
@@ -47,8 +45,18 @@ export const actions: Actions = {
 		console.log(`Actions.${event.request.method}(${event.route.id}).signOut`);
 		signOut(event);
 	},
-	signIn: async (event: { request; route }) => {
+	signIn: async (event) => {
 		console.log(`Actions.${event.request.method}(${event.route.id}).signIn`);
+		const signInForm = await superValidate(event, zod(signInSchema));
+		console.log('signInAction', signInForm);
+		if (!signInForm.valid) return fail(400, { signInForm });
+		const response = await signIn('credential', signInForm.data);
+		console.log('signInActionResponse', response);
+		if (!response) {
+			fail(404, { signInForm });
+		}
+		// TODO: Redirect?
+		return message(signInForm, { text: 'Form "register" posted successfully!' });
 	}
 	// default: async ({ route }) => {
 	// 	console.log(`${route.id}.Actions.default`);

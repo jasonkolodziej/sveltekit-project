@@ -39,13 +39,13 @@
 		{...$$restProps}
 	/>
 {:else if typeof $value === 'boolean'}
-	<!-- * TextInput -->
+	<!-- * Checkbox -->
 	<Checkbox
 		bind:labelText
 		bind:placeholder
 		bind:name={field}
 		aria-invalid={$errors ? 'true' : undefined}
-		bind:value={$value}
+		bind:checked={$value}
 		{...$constraints}
 		{...$$restProps}
 	/>
