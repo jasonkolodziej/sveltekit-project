@@ -68,7 +68,7 @@
 		<FileUploaderDropContainer
 			bind:this={filesUploader}
 			multiple
-			labelText="Drag images here"
+			labelText="Drag images/videos here"
 			{validateFiles}
 			on:change={onUploadFileChanged}
 			on:click={noClickOnUpload}
@@ -97,7 +97,7 @@
 <Row padding>
 	{#each images as src}
 		<Column>
-			<SelectableTile light>
+			<SelectableTile light style="padding:0%">
 				<!-- <div style:margin-top="1rem" style:width="100%"> -->
 				<ImageLoader fadeIn {src} alt={src}>
 					<svelte:fragment slot="loading">
