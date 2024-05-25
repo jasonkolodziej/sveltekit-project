@@ -52,10 +52,10 @@
 		// e.preventDefault();
 		return;
 	};
-	$: showStatuses = filesToUpload.length;
+	$: showProgress = filesToUpload.length;
 	const onUploadFileChanged = (e) => {
 		filesToUpload.push(...e.detail);
-		showStatuses = filesToUpload.length;
+		showProgress = filesToUpload.length;
 		console.log('files', filesToUpload);
 	};
 
@@ -74,7 +74,7 @@
 			on:click={noClickOnUpload}
 		/>
 	</Column>
-	{#key showStatuses}
+	{#key showProgress}
 		{#each filesToUpload as fileUp}
 			<Column>
 				{#key fileUp.status}
