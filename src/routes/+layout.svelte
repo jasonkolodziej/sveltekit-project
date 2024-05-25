@@ -22,6 +22,19 @@
 
 	export let data: LayoutData;
 	export const transition = { duration: 600, delay: 50, easing: expoIn };
+	const time = new Date(Date.now());
+	const totalMinutes = time.getMinutes() + time.getHours() * 60;
+	const themeSundial =
+		totalMinutes >= 0 || 360 >= totalMinutes
+			? 'g100'
+			: totalMinutes > 360 || 648 >= totalMinutes
+				? 'g90'
+				: totalMinutes > 648 || 936 >= totalMinutes
+					? 'g80'
+					: totalMinutes > 936
+						? 'g10'
+						: 'white';
+
 	let sideMenu = data.sections;
 	let headMenu = data.sections;
 	let isOpen = false;
@@ -31,12 +44,12 @@
 		persistentHamburgerMenu: true,
 		href: '/'
 	};
-	// console.log(data.session);
+	console.log(`totalMinutesToday: ${totalMinutes}, theme: ${themeSundial}`);
 </script>
 
-<!-- "white" -->
+<!-- "white" "white" | "g10" | "g80" | "g90" | "g100"; -->
 <Theme
-	theme="g100"
+	theme={themeSundial}
 	tokens={{
 		'background-color': '#d02670'
 	}}
