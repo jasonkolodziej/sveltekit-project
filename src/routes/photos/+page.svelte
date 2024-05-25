@@ -8,6 +8,7 @@
 		Tile,
 		Search,
 		InlineNotification,
+		InlineLoading,
 		ImageLoader,
 		DatePicker,
 		DatePickerInput,
@@ -24,7 +25,8 @@
 
 	const images = [
 		'https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg',
-		'https://upload.wikimedia.org/wikipedia/commons/b/b9/Carbon-design-system-logo.png'
+		'https://upload.wikimedia.org/wikipedia/commons/b/b9/Carbon-design-system-logo.png',
+		'https://m.media-amazon.com/images/I/81JikRw3uLL.jpg'
 	];
 
 	let index = 0;
@@ -92,8 +94,15 @@
 	</Column>
 	{#each images as src}
 		<Column>
-			<SelectableTile style="height: 100%">
-				<ImageLoader fadeIn {src} alt={src} />
+			<SelectableTile>
+				<!-- <div style:margin-top="1rem" style:width="100%"> -->
+				<ImageLoader fadeIn {src} alt={src}>
+					<svelte:fragment slot="loading">
+						<InlineLoading />
+					</svelte:fragment>
+					<svelte:fragment slot="error">An error occurred.</svelte:fragment>
+				</ImageLoader>
+				<!-- </div> -->
 			</SelectableTile>
 		</Column>
 	{/each}
