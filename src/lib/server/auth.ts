@@ -30,6 +30,9 @@ import GitHub from '@auth/sveltekit/providers/github';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import { env } from '$env/dynamic/private';
 import { userSchema } from '$lib/zod-schema';
+import { json, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
 // export const { handle, signIn, signOut } = SvelteKitAuth({
 // 	trustHost: true,
@@ -100,8 +103,10 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 			authorize: async (credentials, request) => {
 				try {
 					// let user = null;
-
-					const user = await userSchema.parseAsync(credentials);
+					console.log(credentials, request);
+					const signInForm = await superValidate(request, zod(userSchema));
+					console.log('signInAction', signInForm);
+					// const user = await userSchema.parseAsync(credentials);
 
 					// logic to salt and hash password
 					// const pwHash = saltAndHashPassword(password);
@@ -109,12 +114,14 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 					// logic to verify if user exists
 					// user = await getUserFromDb(email, pwHash);
 
-					if (!user) {
+					if (!credentials) {
+						//TODO: fix
 						throw new Error('User not found.');
 					}
+					const user = credentials;
 
 					// return json object with the user data
-					return user;
+					return json(user, { status: 300, statusText: 'redirect with user' });
 				} catch (error) {
 					if (error instanceof ZodError) {
 						// Return `null` to indicate that the credentials are invalid
@@ -126,9 +133,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	],
 	secret: env.AUTH_SECRET,
 	trustHost: true
+
 	// adapter: D1Adapter(env.db)
 });
-
 // export const { handle, signIn, signOut } = SvelteKitAuth(async (event) => {
 // 	const authOptions = {
 // 		providers: [

@@ -4,6 +4,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
+import { applyAction } from '$app/forms';
 // import {superValidate} from ''
 
 const signInSchema = userSchema.pick({
