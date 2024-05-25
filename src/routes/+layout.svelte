@@ -34,8 +34,9 @@
 	// console.log(data.session);
 </script>
 
+<!-- "white" -->
 <Theme
-	theme="white"
+	theme="g100"
 	tokens={{
 		'background-color': '#d02670'
 	}}
