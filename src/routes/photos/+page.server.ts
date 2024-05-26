@@ -15,12 +15,6 @@ export const load: PageServerLoad = async ({
 		params
 	);
 	const parentData = await parent();
-	// const signInForm = await superValidate(zod(signInSchema));
-	// const session = await locals.auth();
-	// if (!session) {
-	// 	// Redirect to the signin page
-	// 	throw redirect(303, '/auth/signIn');
-	// }
 	return {
 		...parentData,
 		title: 'Photos'

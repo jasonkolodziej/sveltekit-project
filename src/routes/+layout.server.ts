@@ -17,7 +17,7 @@ export const load: LayoutServerLoad = (async ({
 	parent
 }) => {
 	console.debug(
-		`MAIN.LayoutServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`
+		`LayoutServerLoad.${request.method}(${route.id}) dataReq?:${isDataRequest} subreq?:${isSubRequest}`
 	);
 	// if (!isDataRequest || route.id !== '/') {
 	// 	// return page(request.url);

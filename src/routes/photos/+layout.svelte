@@ -2,25 +2,57 @@
 	import {
 		Row,
 		Column,
-		InlineNotification,
 		DatePicker,
 		DatePickerInput,
 		Search,
-		OverflowMenu,
-		OverflowMenuItem,
+		FileUploaderDropContainer,
 		Button,
 		Popover
 	} from 'carbon-components-svelte';
 	import { Calendar } from 'carbon-icons-svelte';
-	import { page } from '$app/stores';
-	import type { LayoutData } from './$types';
-	import type { PageData } from './$types';
+	import { type UploadedFile } from '$lib/components/media/File';
 	// let page: PageData;
 	// let layout: LayoutData;
 	let open = false;
-	let ref = null;
-	// let sideMenu: Array<{ slug: string; title: string; text: string; href: string }> = new Array();
-	// sideMenu.push({ slug: 'library', title: 'Library', text: 'Library', href: '/' });
+	let ref: { contains: (arg0: any) => boolean } | null = null;
+
+	let filesUploader;
+	let statuses = undefined;
+
+	const filesToUpload: Array<Promise<UploadedFile>> = new Array();
+
+	function validateFiles(files: File[]) {
+		return files;
+	}
+
+	const uploadFile = async (file: File) => {
+		const fd = new FormData();
+		fd.append('file', file);
+		// ? URL.createObjectURL() creates a temporary URL for the image we can use as src for an img tag
+		fd.append('fileObjectUrl', URL.createObjectURL(file));
+		return fetch('/photos', {
+			method: 'POST',
+			body: fd
+		});
+	};
+
+	const noClickOnUpload = (e: any) => {
+		// e.preventDefault();
+		return;
+	};
+
+	$: showProgress = filesToUpload.length;
+
+	const onUploadFileChanged = (e) => {
+		// const pendingFiles: Array<File> = new Array(...e.detail);
+		// const promisedResponses = pendingFiles.map((file) => {
+		// 	const promisedResponse = uploadFile(file);
+		// 	return promisedResponse.then<UploadedFile>((val) => val.json());
+		// });
+		// filesToUpload.push(...promisedResponses);
+		console.log(e.detail);
+		showProgress = filesToUpload.length;
+	};
 </script>
 
 <Row>
@@ -67,5 +99,18 @@
 		<h2>{$page.data.title}</h2>
 	</Column>
 </Row> -->
+
+<Row padding>
+	<Column>
+		<FileUploaderDropContainer
+			bind:this={filesUploader}
+			multiple
+			labelText="Drag images/videos here"
+			{validateFiles}
+			on:change={onUploadFileChanged}
+			on:click={noClickOnUpload}
+		/>
+	</Column>
+</Row>
 
 <slot />
