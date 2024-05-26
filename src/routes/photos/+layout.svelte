@@ -10,7 +10,7 @@
 		Popover
 	} from 'carbon-components-svelte';
 	import { Calendar } from 'carbon-icons-svelte';
-	import { type UploadedFile } from '$lib/components/media/File';
+	import { uploadFile, type UploadedFile } from '$lib/components/media/File';
 	// let page: PageData;
 	// let layout: LayoutData;
 	let open = false;
@@ -25,17 +25,6 @@
 		return files;
 	}
 
-	const uploadFile = async (file: File) => {
-		const fd = new FormData();
-		fd.append('file', file);
-		// ? URL.createObjectURL() creates a temporary URL for the image we can use as src for an img tag
-		fd.append('fileObjectUrl', URL.createObjectURL(file));
-		return fetch('/photos', {
-			method: 'POST',
-			body: fd
-		});
-	};
-
 	const noClickOnUpload = (e: any) => {
 		// e.preventDefault();
 		return;
@@ -44,13 +33,13 @@
 	$: showProgress = filesToUpload.length;
 
 	const onUploadFileChanged = (e) => {
-		// const pendingFiles: Array<File> = new Array(...e.detail);
-		// const promisedResponses = pendingFiles.map((file) => {
-		// 	const promisedResponse = uploadFile(file);
-		// 	return promisedResponse.then<UploadedFile>((val) => val.json());
-		// });
-		// filesToUpload.push(...promisedResponses);
-		console.log(e.detail);
+		const pendingFiles: Array<File> = new Array(...e.detail);
+		const promisedResponses = pendingFiles.map((file) => {
+			const promisedResponse = uploadFile(file);
+			return promisedResponse.then<UploadedFile>((val) => val.json());
+		});
+		filesToUpload.push(...promisedResponses);
+		console.log(filesToUpload);
 		showProgress = filesToUpload.length;
 	};
 </script>
