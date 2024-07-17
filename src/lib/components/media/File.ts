@@ -9,6 +9,13 @@ export const uploadFile = async (file: File) => {
 	});
 };
 
+export const getFileFromFormData = async (request: Request) => {
+	const formData = await request.formData();
+	const file = formData.get('file') as File;
+	const fileObjectUrl = formData.get('fileObjectUrl') as string;
+	return { file, fileObjectUrl };
+};
+
 export interface UploadedFile {
 	readonly file: File;
 	readonly fileObjectUrl: string;
